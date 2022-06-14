@@ -235,13 +235,14 @@ resource "azurerm_virtual_machine" "logger" {
     sku       = "20_04-lts-gen2"
     version   = "latest"
   }
-
+#The linux password needs to be complex
   os_profile {
     computer_name  = "logger"
     admin_username = "vagrant"
-    admin_password = "vagrant"
+    admin_password = "VAgrant123!@#"
   }
-
+#make sure you change your location of your public key. To be safe change "path" and "key_data" to the local location of the file.
+#If you are having problems you can also change disable_passsword to false
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
@@ -249,7 +250,9 @@ resource "azurerm_virtual_machine" "logger" {
       key_data = file(var.public_key_path)
     }
   }
-
+#os_profile_linux_config {
+#    disable_password_authentication = false 
+#  }
   boot_diagnostics {
     enabled     = "true"
     storage_uri = azurerm_storage_account.detectionlab-storageaccount.primary_blob_endpoint
